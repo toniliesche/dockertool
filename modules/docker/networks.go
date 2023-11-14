@@ -28,7 +28,11 @@ func GetNetwork(name string) (*Network, error) {
 }
 
 func InspectNetwork(name string) (*NetworkInspect, error) {
-	output, err := CaptureDockerCommand([]string{"inspect", name})
+	output, err := CaptureDockerCommand([]string{
+		"network",
+		"inspect",
+		name,
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -49,7 +53,7 @@ func FetchNetworks() ([]*Network, error) {
 		"network",
 		"ls",
 		"--format",
-		"{{.ID}} {{.Name}} {{.Driver}} {{.Scope}}",
+		"json",
 	}
 
 	output, err := CaptureDockerCommand(args)
@@ -58,14 +62,17 @@ func FetchNetworks() ([]*Network, error) {
 	}
 
 	networks := make([]*Network, 0, len(output))
+	var ls NetworkLS
 
 	for _, line := range output {
-		parts := strings.Split(line, " ")
-		if 4 > len(parts) {
+		data := []byte(line)
+		if !json.Valid(data) {
 			continue
 		}
 
-		networks = append(networks, &Network{ID: parts[0], Name: parts[1], Driver: parts[2], Scope: parts[3]})
+		err = json.Unmarshal(data, &ls)
+
+		networks = append(networks, &Network{ID: ls.ID, Name: ls.Name, Driver: ls.Driver, Scope: ls.Scope})
 	}
 
 	return networks, nil

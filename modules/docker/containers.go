@@ -96,7 +96,11 @@ func GetShell(name string) error {
 }
 
 func InspectContainer(name string) (*ContainerInspect, error) {
-	output, err := CaptureDockerCommand([]string{"inspect", name})
+	output, err := CaptureDockerCommand([]string{
+		"container",
+		"inspect",
+		name,
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -119,7 +123,7 @@ func FetchContainersByVolume(volume string) ([]*Container, error) {
 		"--filter",
 		fmt.Sprintf("volume=%s", volume),
 		"--format",
-		"{{.ID}} {{.Names}} {{.Image}} {{.State}}",
+		"json",
 	}
 
 	return retrieveContainers(args)
@@ -130,7 +134,7 @@ func FetchContainers(options ...*FilterOptions) ([]*Container, error) {
 		"container",
 		"ls",
 		"--format",
-		"{{.ID}} {{.Names}} {{.Image}} {{.State}}",
+		"json",
 	}
 
 	return retrieveContainers(args, options...)
@@ -144,14 +148,20 @@ func retrieveContainers(args []string, options ...*FilterOptions) ([]*Container,
 	}
 
 	containers := make([]*Container, 0, len(output))
+	var ls ContainerLS
 
 	for _, line := range output {
-		parts := strings.Split(line, " ")
-		if 4 > len(parts) {
+		data := []byte(line)
+		if !json.Valid(data) {
 			continue
 		}
 
-		containers = append(containers, &Container{ID: parts[0], Name: parts[1], Image: parts[2], State: parts[3]})
+		err = json.Unmarshal(data, &ls)
+		if err != nil {
+			return nil, err
+		}
+
+		containers = append(containers, &Container{ID: ls.ID, Name: ls.Names, Image: ls.Image, State: ls.State})
 	}
 
 	if len(options) > 0 {

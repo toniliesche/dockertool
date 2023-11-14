@@ -1,7 +1,7 @@
 package docker
 
 type ContainerInspect struct {
-	ID      string   `json:"Id"`
+	ID      string   `json:"ID"`
 	Created string   `json:"Created"`
 	Path    string   `json:"Path"`
 	Args    []string `json:"Args"`
@@ -27,7 +27,7 @@ type ContainerInspect struct {
 			} `json:"Log"`
 		} `json:"Health"`
 	} `json:"State"`
-	Image        string `json:"Image"`
+	Image        string `json:"ID"`
 	Name         string `json:"Name"`
 	RestartCount int    `json:"RestartCount"`
 	Platform     string `json:"Platform"`
@@ -75,7 +75,7 @@ type ContainerInspect struct {
 		StdinOnce    bool                `json:"StdinOnce"`
 		Env          []string            `json:"Env"`
 		Cmd          []string            `json:"Cmd"`
-		Image        string              `json:"Image"`
+		Image        string              `json:"ID"`
 		Volumes      map[string]struct{} `json:"Volumes"`
 		WorkingDir   string              `json:"WorkingDir"`
 		Entrypoint   []string            `json:"Entrypoint"`

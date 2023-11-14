@@ -5,29 +5,31 @@ import (
 	"strings"
 )
 
-type Volume struct {
-	Name  string
-	Scope string
+type Image struct {
+	ID         string
+	Repository string
+	Tag        string
+	Size       string
 }
 
-func GetVolume(name string) (*Volume, error) {
-	volumes, err := FetchVolumes()
+func GetImage(id string) (*Image, error) {
+	images, err := FetchImages()
 	if err != nil {
 		return nil, err
 	}
 
-	for _, volume := range volumes {
-		if name == volume.Name {
-			return volume, nil
+	for _, image := range images {
+		if id == image.ID {
+			return image, nil
 		}
 	}
 
 	return nil, nil
 }
 
-func InspectVolume(name string) (*VolumeInspect, error) {
+func InspectImage(name string) (*ImageInspect, error) {
 	output, err := CaptureDockerCommand([]string{
-		"volume",
+		"image",
 		"inspect",
 		name,
 	})
@@ -37,7 +39,7 @@ func InspectVolume(name string) (*VolumeInspect, error) {
 
 	jsonString := strings.Join(output, "")
 
-	var inspect = []*VolumeInspect{}
+	var inspect = []*ImageInspect{}
 	err = json.Unmarshal([]byte(jsonString), &inspect)
 	if err != nil {
 		return nil, err
@@ -46,9 +48,9 @@ func InspectVolume(name string) (*VolumeInspect, error) {
 	return inspect[0], nil
 }
 
-func FetchVolumes() ([]*Volume, error) {
+func FetchImages() ([]*Image, error) {
 	args := []string{
-		"volume",
+		"image",
 		"ls",
 		"--format",
 		"json",
@@ -59,8 +61,8 @@ func FetchVolumes() ([]*Volume, error) {
 		return nil, err
 	}
 
-	volumes := make([]*Volume, 0, len(output))
-	var ls VolumeLS
+	images := make([]*Image, 0, len(output))
+	var ls ImageLS
 
 	for _, line := range output {
 		data := []byte(line)
@@ -70,8 +72,8 @@ func FetchVolumes() ([]*Volume, error) {
 
 		err = json.Unmarshal(data, &ls)
 
-		volumes = append(volumes, &Volume{Name: ls.Name, Scope: ls.Scope})
+		images = append(images, &Image{Repository: ls.Repository, Tag: ls.Tag, ID: ls.ID, Size: ls.Size})
 	}
 
-	return volumes, nil
+	return images, nil
 }
