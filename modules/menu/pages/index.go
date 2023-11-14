@@ -7,6 +7,7 @@ import (
 	"github.com/toniliesche/dockertool/modules/menu/pages/containers"
 	"github.com/toniliesche/dockertool/modules/menu/pages/generic"
 	"github.com/toniliesche/dockertool/modules/menu/pages/networks"
+	"github.com/toniliesche/dockertool/modules/menu/pages/volumes"
 )
 
 type Index struct {
@@ -22,6 +23,7 @@ func (p *Index) Run() (menu.PageInterface, int, error) {
 	menuEntries := menu.MenuEntryList{
 		&menu.MenuEntry{Label: "Container Management", Page: &containers.Index{}},
 		&menu.MenuEntry{Label: "Network Management", Page: &networks.Index{}},
+		&menu.MenuEntry{Label: "Volume Management", Page: &volumes.Index{}},
 	}
 
 	result := p.RunMenu(menuEntries, menu.MenuEntryList{{Label: "Show Version Information", Page: &generic.Version{}, Shortcut: "v"}})

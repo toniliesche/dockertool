@@ -1,4 +1,4 @@
-package networks
+package volumes
 
 import (
 	"fmt"
@@ -11,7 +11,7 @@ import (
 
 type Inspect struct {
 	menu.Base
-	Network string
+	Volume string
 }
 
 func (p *Inspect) GetHeadline() string {
@@ -19,41 +19,39 @@ func (p *Inspect) GetHeadline() string {
 }
 
 func (p *Inspect) Run() (menu.PageInterface, int, error) {
-	data, err := docker.InspectNetwork(p.Network)
+	data, err := docker.InspectVolume(p.Volume)
 	if err != nil {
 		return p.HandleError(err, true)
 	}
 
-	console.PrintHeadline("Network")
-	fmt.Printf("Network : %s\n", data.Name)
-	fmt.Printf("Driver  : %s\n", data.Driver)
-	fmt.Printf("Scope   : %s\n", data.Scope)
-	fmt.Println()
-
-	console.PrintHeadline("IP Address Management")
-	fmt.Printf("Driver : %s\n", data.IPAM.Driver)
-	fmt.Println()
-	if len(data.IPAM.Config) > 0 {
-		console.PrintHeadline("IP Ranges")
-		for _, iprange := range data.IPAM.Config {
-			fmt.Printf("Subnet   : %s\n", iprange.Subnet)
-			fmt.Printf("Gateway  : %s\n", iprange.Gateway)
-			fmt.Printf("IP Range : %s\n", iprange.IPRange)
-			fmt.Println()
-		}
+	containers, err := docker.FetchContainersByVolume(p.Volume)
+	if err != nil {
+		return p.HandleError(err, true)
 	}
 
-	console.PrintHeadline("Configuration")
-	fmt.Printf("Internal   : %s\n", console.BoolToYesNo(data.Internal))
-	fmt.Printf("Attachable : %s\n", console.BoolToYesNo(data.Attachable))
-	fmt.Printf("Ingress    : %s\n", console.BoolToYesNo(data.Ingress))
+	console.PrintHeadline("Volume")
+	fmt.Printf("Volume : %s\n", data.Name)
+	fmt.Printf("Driver : %s\n", data.Driver)
+	fmt.Printf("Scope  : %s\n", data.Scope)
 	fmt.Println()
 
-	if len(data.Containers) > 0 {
-		console.PrintHeadline("Containers")
-		for _, container := range data.Containers {
-			fmt.Printf("Name       : %s\n", container.Name)
-			fmt.Printf("IP Address : %s\n", container.IPv4Address)
+	if len(containers) > 0 {
+		console.PrintHeadline("Linked Containers")
+		for _, container := range containers {
+			fmt.Printf("Name        : %s", strings.TrimSpace(container.Name))
+
+			inspect, err := docker.InspectContainer(container.Name)
+			if err != nil {
+				return p.HandleError(err, true)
+			}
+
+			for _, mount := range inspect.Mounts {
+				if mount.Name == data.Name {
+					fmt.Printf("Mount Point : %s\n", mount.Destination)
+					break
+				}
+			}
+
 			fmt.Println()
 		}
 	}

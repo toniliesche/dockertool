@@ -112,6 +112,19 @@ func InspectContainer(name string) (*ContainerInspect, error) {
 	return inspect[0], nil
 }
 
+func FetchContainersByVolume(volume string) ([]*Container, error) {
+	args := []string{
+		"container",
+		"ls",
+		"--filter",
+		fmt.Sprintf("volume=%s", volume),
+		"--format",
+		"{{.ID}} {{.Names}} {{.Image}} {{.State}}",
+	}
+
+	return retrieveContainers(args)
+}
+
 func FetchContainers(options ...*FilterOptions) ([]*Container, error) {
 	args := []string{
 		"container",
@@ -119,6 +132,11 @@ func FetchContainers(options ...*FilterOptions) ([]*Container, error) {
 		"--format",
 		"{{.ID}} {{.Names}} {{.Image}} {{.State}}",
 	}
+
+	return retrieveContainers(args, options...)
+}
+
+func retrieveContainers(args []string, options ...*FilterOptions) ([]*Container, error) {
 
 	output, err := CaptureDockerCommand(args)
 	if nil != err {
