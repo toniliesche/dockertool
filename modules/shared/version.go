@@ -8,7 +8,8 @@ import (
 )
 
 func ShowVersion() {
-	fmt.Printf("AuthorName          : %s\n", state.AppState.AuthorName)
+	fmt.Printf("Author          : %s\n", state.AppState.AuthorName)
+	fmt.Printf("E-Mail          : %s\n", state.AppState.AuthorMail)
 	fmt.Println()
 	fmt.Printf("Build Version   : %s\n", state.AppState.BuildVersion)
 	fmt.Printf("Build Commit    : %s\n", state.AppState.BuildCommit)

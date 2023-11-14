@@ -114,8 +114,8 @@ func InspectContainer(name string) (*ContainerInspect, error) {
 
 func FetchContainers(options ...*FilterOptions) ([]*Container, error) {
 	args := []string{
-		"ps",
-		"-a",
+		"container",
+		"ls",
 		"--format",
 		"{{.ID}} {{.Names}} {{.Image}} {{.State}}",
 	}
@@ -125,7 +125,7 @@ func FetchContainers(options ...*FilterOptions) ([]*Container, error) {
 		return nil, err
 	}
 
-	containers := make([]*Container, 0, len(output)-2)
+	containers := make([]*Container, 0, len(output))
 
 	for _, line := range output {
 		parts := strings.Split(line, " ")

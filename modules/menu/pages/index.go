@@ -4,6 +4,9 @@ import (
 	"fmt"
 	"github.com/toniliesche/dockertool/modules/console"
 	"github.com/toniliesche/dockertool/modules/menu"
+	"github.com/toniliesche/dockertool/modules/menu/pages/containers"
+	"github.com/toniliesche/dockertool/modules/menu/pages/generic"
+	"github.com/toniliesche/dockertool/modules/menu/pages/networks"
 )
 
 type Index struct {
@@ -17,9 +20,10 @@ func (p *Index) GetHeadline() string {
 
 func (p *Index) Run() (menu.PageInterface, int, error) {
 	menuEntries := menu.MenuEntryList{
-		&menu.MenuEntry{Label: "Container Management", Page: &Containers{}},
+		&menu.MenuEntry{Label: "Container Management", Page: &containers.Index{}},
+		&menu.MenuEntry{Label: "Network Management", Page: &networks.Index{}},
 	}
 
-	result := p.RunMenu(menuEntries, menu.MenuEntryList{{Label: "Show Version Information", Page: &Version{}, Shortcut: "v"}})
+	result := p.RunMenu(menuEntries, menu.MenuEntryList{{Label: "Show Version Information", Page: &generic.Version{}, Shortcut: "v"}})
 	return p.EvaluateResult(result)
 }

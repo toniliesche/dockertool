@@ -1,4 +1,4 @@
-package pages
+package containers
 
 import (
 	"github.com/toniliesche/dockertool/modules/console"

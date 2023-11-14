@@ -1,4 +1,4 @@
-package pages
+package containers
 
 import (
 	"fmt"
@@ -8,16 +8,16 @@ import (
 	"sort"
 )
 
-type Containers struct {
+type Index struct {
 	menu.Base
 	menu.Menu
 }
 
-func (p *Containers) GetHeadline() string {
+func (p *Index) GetHeadline() string {
 	return "Container Management"
 }
 
-func (p *Containers) Run() (menu.PageInterface, int, error) {
+func (p *Index) Run() (menu.PageInterface, int, error) {
 	containers, err := docker.FetchContainers()
 	if err != nil {
 		return p.HandleError(err, true)
@@ -47,7 +47,7 @@ func (p *Containers) Run() (menu.PageInterface, int, error) {
 		container := containers[mapping[key]]
 		menuEntries = append(
 			menuEntries,
-			&menu.MenuEntry{Label: fmt.Sprintf("%s (Running: %s)", container.Name, console.BoolToYesNoColored(container.IsRunning())), Page: &ContainerActions{Container: container.Name}, Divider: index == dividingIndex},
+			&menu.MenuEntry{Label: fmt.Sprintf("%s (Running: %s)", container.Name, console.BoolToYesNoColored(container.IsRunning())), Page: &SelectAction{Container: container.Name}, Divider: index == dividingIndex},
 		)
 	}
 

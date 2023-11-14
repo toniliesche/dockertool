@@ -1,21 +1,21 @@
-package pages
+package containers
 
 import (
 	"github.com/toniliesche/dockertool/modules/docker"
 	"github.com/toniliesche/dockertool/modules/menu"
 )
 
-type ContainerActions struct {
+type SelectAction struct {
 	menu.Base
 	menu.Menu
 	Container string
 }
 
-func (p *ContainerActions) GetHeadline() string {
+func (p *SelectAction) GetHeadline() string {
 	return p.Container
 }
 
-func (p *ContainerActions) Run() (menu.PageInterface, int, error) {
+func (p *SelectAction) Run() (menu.PageInterface, int, error) {
 	menuEntries := menu.MenuEntryList{}
 
 	container, err := docker.GetContainer(p.Container)
@@ -35,7 +35,7 @@ func (p *ContainerActions) Run() (menu.PageInterface, int, error) {
 			&menu.MenuEntry{Label: "Show Stdout", Page: &GetStdout{Container: p.Container, Follow: false}},
 		)
 	}
-	menuEntries = append(menuEntries, &menu.MenuEntry{Label: "Show Info", Page: &ShowInfo{Container: p.Container}})
+	menuEntries = append(menuEntries, &menu.MenuEntry{Label: "Show Info", Page: &Inspect{Container: p.Container}})
 
 	result := p.RunMenu(menuEntries, menu.MenuEntryList{})
 	return p.EvaluateResult(result)

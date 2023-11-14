@@ -1,4 +1,4 @@
-package pages
+package containers
 
 import (
 	"fmt"
@@ -9,16 +9,16 @@ import (
 	"strings"
 )
 
-type ShowInfo struct {
+type Inspect struct {
 	menu.Base
 	Container string
 }
 
-func (p *ShowInfo) GetHeadline() string {
+func (p *Inspect) GetHeadline() string {
 	return "Show Info"
 }
 
-func (p *ShowInfo) Run() (menu.PageInterface, int, error) {
+func (p *Inspect) Run() (menu.PageInterface, int, error) {
 	data, err := docker.InspectContainer(p.Container)
 	if err != nil {
 		return p.HandleError(err, true)

@@ -1,4 +1,4 @@
-package pages
+package generic
 
 import (
 	"github.com/toniliesche/dockertool/modules/console"
