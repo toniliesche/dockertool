@@ -2,7 +2,7 @@ package generic
 
 import (
 	"github.com/toniliesche/dockertool/modules/application/menu"
-	"github.com/toniliesche/dockertool/modules/domain/shared"
+	"github.com/toniliesche/dockertool/modules/domain/tasks/generic"
 	"github.com/toniliesche/dockertool/modules/infrastructure/console"
 )
 
@@ -15,7 +15,7 @@ func (p *Version) GetHeadline() string {
 }
 
 func (p *Version) Run() (menu.PageInterface, int, error) {
-	_, err := p.CreateRunCommand(shared.CreateShowVersionInformationCommand())
+	_, err := p.CreateAndRunTask(generic.CreateShowVersionInformationCommand())
 	if err != nil {
 		return p.HandleError(err, true)
 	}

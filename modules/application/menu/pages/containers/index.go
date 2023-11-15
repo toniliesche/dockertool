@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/toniliesche/dockertool/modules/application/menu"
 	"github.com/toniliesche/dockertool/modules/infrastructure/console"
-	"github.com/toniliesche/dockertool/modules/infrastructure/docker"
+	"github.com/toniliesche/dockertool/modules/infrastructure/docker/containers"
 	"sort"
 )
 
@@ -18,7 +18,7 @@ func (p *Index) GetHeadline() string {
 }
 
 func (p *Index) Run() (menu.PageInterface, int, error) {
-	containers, err := docker.FetchContainers()
+	containerList, err := containers.FetchContainerList()
 	if err != nil {
 		return p.HandleError(err, true)
 	}
@@ -26,9 +26,9 @@ func (p *Index) Run() (menu.PageInterface, int, error) {
 	menuEntries := menu.EntryList{}
 
 	mapping := map[string]int{}
-	keys := make([]string, 0, len(containers))
-	keysStopped := make([]string, 0, len(containers))
-	for key, container := range containers {
+	keys := make([]string, 0, len(containerList))
+	keysStopped := make([]string, 0, len(containerList))
+	for key, container := range containerList {
 		if container.IsRunning() {
 			keys = append(keys, container.Name)
 		} else {
@@ -44,7 +44,7 @@ func (p *Index) Run() (menu.PageInterface, int, error) {
 	keys = append(keys, keysStopped...)
 
 	for index, key := range keys {
-		container := containers[mapping[key]]
+		container := containerList[mapping[key]]
 		menuEntries = append(
 			menuEntries,
 			&menu.Entry{Label: fmt.Sprintf("%s (Running: %s)", container.Name, console.BoolToYesNoColored(container.IsRunning())), Page: &SelectAction{Container: container.Name}, Divider: index == dividingIndex},

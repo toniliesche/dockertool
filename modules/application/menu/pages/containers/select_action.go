@@ -2,7 +2,7 @@ package containers
 
 import (
 	"github.com/toniliesche/dockertool/modules/application/menu"
-	"github.com/toniliesche/dockertool/modules/infrastructure/docker"
+	"github.com/toniliesche/dockertool/modules/infrastructure/docker/containers"
 )
 
 type SelectAction struct {
@@ -18,7 +18,7 @@ func (p *SelectAction) GetHeadline() string {
 func (p *SelectAction) Run() (menu.PageInterface, int, error) {
 	menuEntries := menu.EntryList{}
 
-	container, err := docker.GetContainer(p.Container)
+	container, err := containers.FetchContainer(p.Container)
 	if err != nil {
 		return p.HandleError(err, false)
 	}

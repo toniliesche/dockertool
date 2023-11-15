@@ -5,5 +5,5 @@ import (
 )
 
 type Base struct {
-	commands.Runner
+	commands.TaskRunner
 }

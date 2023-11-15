@@ -1,11 +1,11 @@
 package commands
 
-import "github.com/toniliesche/dockertool/modules/domain/application"
+import "github.com/toniliesche/dockertool/modules/domain/shared"
 
-type Runner struct {
+type TaskRunner struct {
 }
 
-func (r *Runner) CreateRunCommand(command application.CommandInterface, err error) (interface{}, error) {
+func (r *TaskRunner) CreateAndRunTask(command shared.TaskInterface, err error) (interface{}, error) {
 	if err != nil {
 		return nil, err
 	}

@@ -2,7 +2,7 @@ package volumes
 
 import (
 	"github.com/toniliesche/dockertool/modules/application/menu"
-	"github.com/toniliesche/dockertool/modules/infrastructure/docker"
+	"github.com/toniliesche/dockertool/modules/infrastructure/docker/volumes"
 )
 
 type Index struct {
@@ -15,14 +15,14 @@ func (p *Index) GetHeadline() string {
 }
 
 func (p *Index) Run() (menu.PageInterface, int, error) {
-	volumes, err := docker.FetchVolumes()
+	volumeList, err := volumes.FetchVolumeList()
 	if err != nil {
 		return p.HandleError(err, true)
 	}
 
 	menuEntries := menu.EntryList{}
 
-	for _, volume := range volumes {
+	for _, volume := range volumeList {
 		menuEntries = append(
 			menuEntries,
 			&menu.Entry{Label: volume.Name, Page: &SelectAction{Volume: volume.Name}},

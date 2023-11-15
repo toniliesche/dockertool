@@ -7,7 +7,7 @@ import (
 )
 
 type Base struct {
-	commands.Runner
+	commands.TaskRunner
 	Args     []string
 	DontPush bool
 }

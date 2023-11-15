@@ -2,7 +2,7 @@ package volumes
 
 import (
 	"github.com/toniliesche/dockertool/modules/application/menu"
-	"github.com/toniliesche/dockertool/modules/infrastructure/docker"
+	"github.com/toniliesche/dockertool/modules/infrastructure/docker/volumes"
 )
 
 type SelectAction struct {
@@ -18,7 +18,7 @@ func (p *SelectAction) GetHeadline() string {
 func (p *SelectAction) Run() (menu.PageInterface, int, error) {
 	menuEntries := menu.EntryList{}
 
-	_, err := docker.GetVolume(p.Volume)
+	_, err := volumes.FetchVolume(p.Volume)
 	if err != nil {
 		return p.HandleError(err, false)
 	}

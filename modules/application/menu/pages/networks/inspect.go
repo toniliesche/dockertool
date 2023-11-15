@@ -2,7 +2,7 @@ package networks
 
 import (
 	"github.com/toniliesche/dockertool/modules/application/menu"
-	"github.com/toniliesche/dockertool/modules/domain/docker/networks"
+	"github.com/toniliesche/dockertool/modules/domain/tasks/docker/networks"
 	"github.com/toniliesche/dockertool/modules/infrastructure/console"
 )
 
@@ -16,7 +16,7 @@ func (p *Inspect) GetHeadline() string {
 }
 
 func (p *Inspect) Run() (menu.PageInterface, int, error) {
-	_, err := p.CreateRunCommand(networks.CreateInspectNetworkCommand(p.Network))
+	_, err := p.CreateAndRunTask(networks.CreateInspectNetworkCommand(p.Network))
 	if err != nil {
 		return p.HandleError(err, true)
 	}

@@ -2,7 +2,7 @@ package images
 
 import (
 	"github.com/toniliesche/dockertool/modules/application/menu"
-	"github.com/toniliesche/dockertool/modules/domain/docker/images"
+	"github.com/toniliesche/dockertool/modules/domain/tasks/docker/images"
 	"github.com/toniliesche/dockertool/modules/infrastructure/console"
 )
 
@@ -16,7 +16,7 @@ func (p *Inspect) GetHeadline() string {
 }
 
 func (p *Inspect) Run() (menu.PageInterface, int, error) {
-	_, err := p.CreateRunCommand(images.CreateInspectImageCommand(p.Image))
+	_, err := p.CreateAndRunTask(images.CreateInspectImageCommand(p.Image))
 	if err != nil {
 		return p.HandleError(err, true)
 	}

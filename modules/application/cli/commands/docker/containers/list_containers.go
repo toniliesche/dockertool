@@ -1,9 +1,8 @@
 package containers
 
 import (
-	"fmt"
 	"github.com/toniliesche/dockertool/modules/application/cli/commands"
-	docker2 "github.com/toniliesche/dockertool/modules/infrastructure/docker"
+	"github.com/toniliesche/dockertool/modules/domain/tasks/docker/containers"
 	"github.com/urfave/cli/v2"
 )
 
@@ -12,34 +11,27 @@ type ListContainers struct {
 }
 
 func (c *ListContainers) Run(context *cli.Context) error {
-	options := &docker2.FilterOptions{
-		StateFilter: context.IsSet("ro") || context.IsSet("so"),
-		RunningOnly: context.IsSet("ro"),
-		StoppedOnly: context.IsSet("so"),
-		NameFilter:  context.String("n"),
-		RepoFilter:  context.String("r"),
-	}
+	_, err := c.CreateAndRunTask(
+		containers.CreateListContainersCommand(
+			context.IsSet("ro"),
+			context.IsSet("so"),
+			context.String("n"),
+			context.String("r"),
+		),
+	)
 
-	containers, err := docker2.FetchContainers(options)
-	if err != nil {
-		return err
-	}
-
-	for _, container := range containers {
-		fmt.Printf("container : %s (running : %s)\n", container.Name, container.IsRunningString())
-	}
-
-	return nil
+	return err
 }
 
 func DefineListContainers() *cli.Command {
 	cmd := &ListContainers{}
 
 	return &cli.Command{
-		Name:    "list",
-		Aliases: []string{"l"},
-		Usage:   "list existing docker containers",
-		Action:  cmd.Run,
+		Name:     "container-list",
+		Category: "docker",
+		Aliases:  []string{"cl"},
+		Usage:    "list existing docker containers",
+		Action:   cmd.Run,
 		Flags: []cli.Flag{
 			&cli.BoolFlag{Name: "running-only", Aliases: []string{"ro"}, Usage: "mutually exclusive with stopped-only"},
 			&cli.BoolFlag{Name: "stopped-only", Aliases: []string{"so"}, Usage: "mutually exclusive with running-only"},

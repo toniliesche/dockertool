@@ -2,7 +2,7 @@ package containers
 
 import (
 	"github.com/toniliesche/dockertool/modules/application/menu"
-	"github.com/toniliesche/dockertool/modules/domain/docker/containers"
+	"github.com/toniliesche/dockertool/modules/domain/tasks/docker/containers"
 	"github.com/toniliesche/dockertool/modules/infrastructure/console"
 )
 
@@ -17,7 +17,7 @@ func (p *GetStdout) GetHeadline() string {
 }
 
 func (p *GetStdout) Run() (menu.PageInterface, int, error) {
-	p.CreateRunCommand(containers.CreateAttachToContainerCommand(p.Container, p.Follow))
+	p.CreateAndRunTask(containers.CreateAttachToContainerCommand(p.Container, p.Follow))
 
 	console.WaitForReturn()
 

@@ -2,7 +2,7 @@ package networks
 
 import (
 	menu2 "github.com/toniliesche/dockertool/modules/application/menu"
-	"github.com/toniliesche/dockertool/modules/infrastructure/docker"
+	"github.com/toniliesche/dockertool/modules/infrastructure/docker/networks"
 )
 
 type SelectAction struct {
@@ -18,7 +18,7 @@ func (p *SelectAction) GetHeadline() string {
 func (p *SelectAction) Run() (menu2.PageInterface, int, error) {
 	menuEntries := menu2.EntryList{}
 
-	_, err := docker.GetNetwork(p.Network)
+	_, err := networks.FetchNetwork(p.Network)
 	if err != nil {
 		return p.HandleError(err, false)
 	}

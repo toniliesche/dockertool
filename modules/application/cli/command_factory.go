@@ -2,7 +2,7 @@ package cli
 
 import (
 	"github.com/toniliesche/dockertool/modules/application/cli/commands/docker/containers"
-	"github.com/toniliesche/dockertool/modules/application/cli/commands/shared"
+	"github.com/toniliesche/dockertool/modules/application/cli/commands/generic"
 	"github.com/urfave/cli/v2"
 )
 
@@ -21,9 +21,9 @@ func GetCommandFactory() *CommandFactory {
 		commands := []*cli.Command{
 			containers.DefineAttachToContainer(),
 			containers.DefineListContainers(),
-			shared.DefineMenu(),
+			generic.DefineMenu(),
 			containers.DefineGetShell(),
-			shared.DefineShowVersion(),
+			generic.DefineShowVersion(),
 		}
 
 		factory = &CommandFactory{commands: commands}
