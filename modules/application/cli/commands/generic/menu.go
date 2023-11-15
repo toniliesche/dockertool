@@ -2,9 +2,9 @@ package generic
 
 import (
 	"fmt"
-	"github.com/toniliesche/dockertool/modules/application/cli/commands"
+	"github.com/toniliesche/dockertool/modules/application/cli/commands/base"
 	"github.com/toniliesche/dockertool/modules/application/common/library"
-	"github.com/toniliesche/dockertool/modules/application/menu"
+	"github.com/toniliesche/dockertool/modules/application/menu/interfaces"
 	"github.com/toniliesche/dockertool/modules/application/menu/pages"
 	"github.com/toniliesche/dockertool/modules/infrastructure/console"
 	"github.com/urfave/cli/v2"
@@ -12,7 +12,7 @@ import (
 )
 
 type Menu struct {
-	commands.Base
+	base.Command
 	Headlines library.Stack[string]
 }
 
@@ -34,13 +34,13 @@ func DefineMenu() *cli.Command {
 	}
 }
 
-func (c *Menu) run(pageObj menu.PageInterface) (int, error) {
-	pageStack := library.Stack[menu.PageInterface]{}
+func (c *Menu) run(pageObj interfaces.PageInterface) (int, error) {
+	pageStack := library.Stack[interfaces.PageInterface]{}
 	c.Headlines = library.Stack[string]{}
 
 	var returnCode int
 	var err error
-	var prevObj menu.PageInterface
+	var prevObj interfaces.PageInterface
 
 	for {
 		fmt.Print("\033[H\033[2J")

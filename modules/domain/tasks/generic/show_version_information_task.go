@@ -3,17 +3,13 @@ package generic
 import (
 	"fmt"
 	"github.com/toniliesche/dockertool/modules/application"
-	domain_application "github.com/toniliesche/dockertool/modules/domain/shared"
+	"github.com/toniliesche/dockertool/modules/domain/tasks/base"
 	"github.com/toniliesche/dockertool/modules/infrastructure/console"
 	"runtime"
 )
 
 type ShowVersionInformationTask struct {
-	domain_application.BaseTask
-}
-
-func (t *ShowVersionInformationTask) Validate() bool {
-	return true
+	base.Task
 }
 
 func (t *ShowVersionInformationTask) Run() error {
@@ -35,10 +31,6 @@ func (t *ShowVersionInformationTask) Run() error {
 	}
 	fmt.Println()
 
-	return nil
-}
-
-func (t *ShowVersionInformationTask) GetResult() interface{} {
 	return nil
 }
 

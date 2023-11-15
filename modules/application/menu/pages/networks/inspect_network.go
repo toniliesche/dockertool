@@ -1,23 +1,24 @@
 package networks
 
 import (
-	"github.com/toniliesche/dockertool/modules/application/menu"
+	"github.com/toniliesche/dockertool/modules/application/menu/interfaces"
+	"github.com/toniliesche/dockertool/modules/application/menu/pages/base"
 	"github.com/toniliesche/dockertool/modules/domain/tasks/docker/networks"
 	"github.com/toniliesche/dockertool/modules/infrastructure/console"
 )
 
-type Inspect struct {
-	menu.Base
+type InspectNetwork struct {
+	base.Page
 	Network string
 }
 
-func (p *Inspect) GetHeadline() string {
+func (p *InspectNetwork) GetHeadline() string {
 	return "Show Info"
 }
 
-func (p *Inspect) Run() (menu.PageInterface, int, error) {
+func (p *InspectNetwork) Run() (interfaces.PageInterface, int, error) {
 	_, err := p.CreateAndRunTask(networks.CreateInspectNetworkCommand(p.Network))
-	if err != nil {
+	if nil != err {
 		return p.HandleError(err, true)
 	}
 

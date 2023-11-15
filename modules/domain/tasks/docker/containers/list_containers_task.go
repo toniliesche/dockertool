@@ -2,23 +2,19 @@ package containers
 
 import (
 	"fmt"
-	"github.com/toniliesche/dockertool/modules/domain/shared"
+	"github.com/toniliesche/dockertool/modules/domain/tasks/base"
 	"github.com/toniliesche/dockertool/modules/infrastructure/docker/containers"
 	"sort"
 )
 
 type ListContainersTask struct {
-	shared.BaseTask
+	base.Task
 	options *containers.FilterOptions
-}
-
-func (t *ListContainersTask) Validate() bool {
-	return true
 }
 
 func (t *ListContainersTask) Run() error {
 	containerList, err := containers.FetchContainerList(t.options)
-	if err != nil {
+	if nil != err {
 		return err
 	}
 	mapping := map[string]int{}
@@ -37,10 +33,6 @@ func (t *ListContainersTask) Run() error {
 		fmt.Printf("container : %s (running : %s)\n", container.Name, container.IsRunningString())
 	}
 
-	return nil
-}
-
-func (t *ListContainersTask) GetResult() interface{} {
 	return nil
 }
 

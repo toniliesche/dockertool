@@ -1,13 +1,13 @@
 package containers
 
 import (
-	"github.com/toniliesche/dockertool/modules/application/cli/commands"
+	"github.com/toniliesche/dockertool/modules/application/cli/commands/base"
 	"github.com/toniliesche/dockertool/modules/domain/tasks/docker/containers"
 	"github.com/urfave/cli/v2"
 )
 
 type ListContainers struct {
-	commands.Base
+	base.Command
 }
 
 func (c *ListContainers) Run(context *cli.Context) error {

@@ -2,12 +2,12 @@ package containers
 
 import (
 	"fmt"
-	"github.com/toniliesche/dockertool/modules/domain/shared"
+	"github.com/toniliesche/dockertool/modules/domain/tasks/base"
 	"github.com/toniliesche/dockertool/modules/infrastructure/docker/containers"
 )
 
 type AttachToContainerTask struct {
-	shared.BaseTask
+	base.Task
 	container string
 	follow    bool
 }
@@ -24,10 +24,6 @@ func (t *AttachToContainerTask) Validate() bool {
 
 func (t *AttachToContainerTask) Run() error {
 	return containers.GetStdoutFromContainer(t.container, t.follow)
-}
-
-func (t *AttachToContainerTask) GetResult() interface{} {
-	return nil
 }
 
 func CreateAttachToContainerCommand(container string, follow bool) (*AttachToContainerTask, error) {

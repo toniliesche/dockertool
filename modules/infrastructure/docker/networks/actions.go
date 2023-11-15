@@ -8,7 +8,7 @@ import (
 
 func FetchNetwork(name string) (*Network, error) {
 	networks, err := FetchNetworkList()
-	if err != nil {
+	if nil != err {
 		return nil, err
 	}
 
@@ -57,7 +57,7 @@ func InspectNetwork(name string) (*InspectResult, error) {
 		"inspect",
 		name,
 	})
-	if err != nil {
+	if nil != err {
 		return nil, err
 	}
 
@@ -65,7 +65,7 @@ func InspectNetwork(name string) (*InspectResult, error) {
 
 	var inspect = []*InspectResult{}
 	err = json.Unmarshal([]byte(jsonString), &inspect)
-	if err != nil {
+	if nil != err {
 		return nil, err
 	}
 

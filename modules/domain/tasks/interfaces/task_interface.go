@@ -1,4 +1,4 @@
-package shared
+package interfaces
 
 type TaskInterface interface {
 	Run() error

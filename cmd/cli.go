@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/toniliesche/dockertool/modules/application"
-	application_cli "github.com/toniliesche/dockertool/modules/application/cli"
+	application_cli "github.com/toniliesche/dockertool/modules/application/cli/commands/factory"
 	"github.com/toniliesche/dockertool/modules/infrastructure/console"
 	"github.com/urfave/cli/v2"
 	"os"

@@ -8,7 +8,7 @@ import (
 
 func FetchVolume(name string) (*Volume, error) {
 	volumes, err := FetchVolumeList()
-	if err != nil {
+	if nil != err {
 		return nil, err
 	}
 
@@ -57,7 +57,7 @@ func InspectVolume(name string) (*InspectResult, error) {
 		"inspect",
 		name,
 	})
-	if err != nil {
+	if nil != err {
 		return nil, err
 	}
 
@@ -65,7 +65,7 @@ func InspectVolume(name string) (*InspectResult, error) {
 
 	var inspect = []*InspectResult{}
 	err = json.Unmarshal([]byte(jsonString), &inspect)
-	if err != nil {
+	if nil != err {
 		return nil, err
 	}
 

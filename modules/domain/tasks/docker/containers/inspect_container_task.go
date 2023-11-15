@@ -2,7 +2,7 @@ package containers
 
 import (
 	"fmt"
-	"github.com/toniliesche/dockertool/modules/domain/shared"
+	"github.com/toniliesche/dockertool/modules/domain/tasks/base"
 	"github.com/toniliesche/dockertool/modules/infrastructure/console"
 	"github.com/toniliesche/dockertool/modules/infrastructure/docker/containers"
 	"sort"
@@ -10,7 +10,7 @@ import (
 )
 
 type InspectContainerTask struct {
-	shared.BaseTask
+	base.Task
 	container string
 }
 
@@ -26,7 +26,7 @@ func (t *InspectContainerTask) Validate() bool {
 
 func (t *InspectContainerTask) Run() error {
 	data, err := containers.InspectContainer(t.container)
-	if err != nil {
+	if nil != err {
 		return err
 	}
 
@@ -135,10 +135,6 @@ func (t *InspectContainerTask) Run() error {
 		}
 	}
 
-	return nil
-}
-
-func (t *InspectContainerTask) GetResult() interface{} {
 	return nil
 }
 

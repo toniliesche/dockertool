@@ -9,7 +9,7 @@ import (
 
 func FetchContainer(name string) (*Container, error) {
 	containers, err := FetchContainerList()
-	if err != nil {
+	if nil != err {
 		return nil, err
 	}
 
@@ -49,11 +49,11 @@ func FetchContainerListByVolume(volume string) ([]*Container, error) {
 
 func GetStdoutFromContainer(name string, follow bool) error {
 	container, err := FetchContainer(name)
-	if err != nil {
+	if nil != err {
 		return err
 	}
 
-	if container == nil {
+	if nil == container {
 		return fmt.Errorf("container not found")
 	}
 
@@ -78,11 +78,11 @@ func GetStdoutFromContainer(name string, follow bool) error {
 
 func GetShell(name string) error {
 	container, err := FetchContainer(name)
-	if err != nil {
+	if nil != err {
 		return err
 	}
 
-	if container == nil {
+	if nil == container {
 		return fmt.Errorf("container not found")
 	}
 
@@ -93,7 +93,7 @@ func GetShell(name string) error {
 	checkArgs := []string{"exec", "-it", container.Name, "which", "bash"}
 	var shell string
 	err = docker.RunDockerCommand(checkArgs, false, true)
-	if err != nil {
+	if nil != err {
 		shell = "sh"
 	} else {
 		shell = "bash"
@@ -108,7 +108,7 @@ func InspectContainer(name string) (*InspectResult, error) {
 		"inspect",
 		name,
 	})
-	if err != nil {
+	if nil != err {
 		return nil, err
 	}
 
@@ -116,7 +116,7 @@ func InspectContainer(name string) (*InspectResult, error) {
 
 	var inspect = []*InspectResult{}
 	err = json.Unmarshal([]byte(jsonString), &inspect)
-	if err != nil {
+	if nil != err {
 		return nil, err
 	}
 
@@ -140,7 +140,7 @@ func retrieveContainers(args []string, options ...*FilterOptions) ([]*Container,
 		}
 
 		err = json.Unmarshal(data, &ls)
-		if err != nil {
+		if nil != err {
 			return nil, err
 		}
 
@@ -149,7 +149,7 @@ func retrieveContainers(args []string, options ...*FilterOptions) ([]*Container,
 
 	if len(options) > 0 {
 		containers, err = runFilters(options[0], containers)
-		if err != nil {
+		if nil != err {
 			return nil, err
 		}
 	}

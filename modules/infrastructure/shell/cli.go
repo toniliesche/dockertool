@@ -21,7 +21,7 @@ func CaptureShell(cmd *exec.Cmd) ([]string, error) {
 
 	writer := bytes.NewBufferString("")
 	err := run(cmd, writer, writer, false, false)
-	if err != nil {
+	if nil != err {
 		return output, err
 	}
 
@@ -54,7 +54,7 @@ func run(cmd *exec.Cmd, outputWriter io.Writer, errorWriter io.Writer, interacti
 	err := cmd.Run()
 	if !suppressOutput {
 		fmt.Println()
-		if err != nil {
+		if nil != err {
 			fmt.Printf("An error occured: %s\n", err.Error())
 		}
 	}

@@ -1,32 +1,34 @@
-package menu
+package base
 
 import (
 	"fmt"
 	"github.com/toniliesche/dockertool/modules/application/common/commands"
+	"github.com/toniliesche/dockertool/modules/application/menu/interfaces"
+	"github.com/toniliesche/dockertool/modules/application/menu/models"
 	"github.com/toniliesche/dockertool/modules/infrastructure/console"
 )
 
-type Base struct {
+type Page struct {
 	commands.TaskRunner
 	Args     []string
 	DontPush bool
 }
 
-func (p *Base) RegisterHook() {}
+func (p *Page) RegisterHook() {}
 
-func (p *Base) HasHook() bool {
+func (p *Page) HasHook() bool {
 	return false
 }
 
-func (p *Base) DontPushToStack() bool {
+func (p *Page) DontPushToStack() bool {
 	return p.DontPush
 }
 
-func (p *Base) SetArguments(args []string) {
+func (p *Page) SetArguments(args []string) {
 	p.Args = args
 }
 
-func (p *Base) HandleError(err error, confirm bool) (PageInterface, int, error) {
+func (p *Page) HandleError(err error, confirm bool) (interfaces.PageInterface, int, error) {
 	switch err.(type) {
 	case console.AbortError:
 		fmt.Println("Aborted")
@@ -43,7 +45,7 @@ func (p *Base) HandleError(err error, confirm bool) (PageInterface, int, error) 
 	}
 }
 
-func (p *Base) EvaluateResult(result *Entry) (PageInterface, int, error) {
+func (p *Page) EvaluateResult(result *models.Entry) (interfaces.PageInterface, int, error) {
 	if nil == result {
 		return nil, 0, nil
 	}

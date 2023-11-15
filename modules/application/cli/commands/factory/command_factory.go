@@ -1,4 +1,4 @@
-package cli
+package factory
 
 import (
 	"github.com/toniliesche/dockertool/modules/application/cli/commands/docker/containers"

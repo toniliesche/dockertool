@@ -1,13 +1,13 @@
 package generic
 
 import (
-	"github.com/toniliesche/dockertool/modules/application/cli/commands"
+	"github.com/toniliesche/dockertool/modules/application/cli/commands/base"
 	"github.com/toniliesche/dockertool/modules/domain/tasks/generic"
 	"github.com/urfave/cli/v2"
 )
 
 type ShowVersion struct {
-	commands.Base
+	base.Command
 }
 
 func (c *ShowVersion) Run(context *cli.Context) error {

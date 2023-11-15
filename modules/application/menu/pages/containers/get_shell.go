@@ -1,13 +1,14 @@
 package containers
 
 import (
-	"github.com/toniliesche/dockertool/modules/application/menu"
+	"github.com/toniliesche/dockertool/modules/application/menu/interfaces"
+	"github.com/toniliesche/dockertool/modules/application/menu/pages/base"
 	"github.com/toniliesche/dockertool/modules/domain/tasks/docker/containers"
 	"github.com/toniliesche/dockertool/modules/infrastructure/console"
 )
 
 type GetShell struct {
-	menu.Base
+	base.Page
 	Container string
 }
 
@@ -15,9 +16,9 @@ func (p *GetShell) GetHeadline() string {
 	return "Get Shell"
 }
 
-func (p *GetShell) Run() (menu.PageInterface, int, error) {
+func (p *GetShell) Run() (interfaces.PageInterface, int, error) {
 	_, err := p.CreateAndRunTask(containers.CreateGetContainerShellCommand(p.Container))
-	if err != nil {
+	if nil != err {
 		return p.HandleError(err, true)
 	}
 

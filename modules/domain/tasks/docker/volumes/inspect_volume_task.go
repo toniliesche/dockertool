@@ -2,7 +2,7 @@ package volumes
 
 import (
 	"fmt"
-	"github.com/toniliesche/dockertool/modules/domain/shared"
+	"github.com/toniliesche/dockertool/modules/domain/tasks/base"
 	"github.com/toniliesche/dockertool/modules/infrastructure/console"
 	"github.com/toniliesche/dockertool/modules/infrastructure/docker/containers"
 	"github.com/toniliesche/dockertool/modules/infrastructure/docker/volumes"
@@ -11,7 +11,7 @@ import (
 )
 
 type InspectVolumeTask struct {
-	shared.BaseTask
+	base.Task
 	volume string
 }
 
@@ -27,12 +27,12 @@ func (t *InspectVolumeTask) Validate() bool {
 
 func (t *InspectVolumeTask) Run() error {
 	data, err := volumes.InspectVolume(t.volume)
-	if err != nil {
+	if nil != err {
 		return err
 	}
 
 	containerList, err := containers.FetchContainerListByVolume(t.volume)
-	if err != nil {
+	if nil != err {
 		return err
 	}
 
@@ -48,7 +48,7 @@ func (t *InspectVolumeTask) Run() error {
 			fmt.Printf("Name        : %s", strings.TrimSpace(container.Name))
 
 			inspect, err := containers.InspectContainer(container.Name)
-			if err != nil {
+			if nil != err {
 				return err
 			}
 
@@ -115,10 +115,6 @@ func (t *InspectVolumeTask) Run() error {
 		}
 	}
 
-	return nil
-}
-
-func (t *InspectVolumeTask) GetResult() interface{} {
 	return nil
 }
 

@@ -2,7 +2,7 @@ package networks
 
 import (
 	"fmt"
-	"github.com/toniliesche/dockertool/modules/domain/shared"
+	"github.com/toniliesche/dockertool/modules/domain/tasks/base"
 	"github.com/toniliesche/dockertool/modules/infrastructure/console"
 	"github.com/toniliesche/dockertool/modules/infrastructure/docker/networks"
 	"sort"
@@ -10,7 +10,7 @@ import (
 )
 
 type InspectNetworkTask struct {
-	shared.BaseTask
+	base.Task
 	network string
 }
 
@@ -26,7 +26,7 @@ func (t *InspectNetworkTask) Validate() bool {
 
 func (t *InspectNetworkTask) Run() error {
 	data, err := networks.InspectNetwork(t.network)
-	if err != nil {
+	if nil != err {
 		return err
 	}
 
@@ -116,10 +116,6 @@ func (t *InspectNetworkTask) Run() error {
 		}
 	}
 
-	return nil
-}
-
-func (t *InspectNetworkTask) GetResult() interface{} {
 	return nil
 }
 

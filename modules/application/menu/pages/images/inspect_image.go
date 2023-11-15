@@ -1,23 +1,24 @@
 package images
 
 import (
-	"github.com/toniliesche/dockertool/modules/application/menu"
+	"github.com/toniliesche/dockertool/modules/application/menu/interfaces"
+	"github.com/toniliesche/dockertool/modules/application/menu/pages/base"
 	"github.com/toniliesche/dockertool/modules/domain/tasks/docker/images"
 	"github.com/toniliesche/dockertool/modules/infrastructure/console"
 )
 
-type Inspect struct {
-	menu.Base
+type InspectImage struct {
+	base.Page
 	Image string
 }
 
-func (p *Inspect) GetHeadline() string {
+func (p *InspectImage) GetHeadline() string {
 	return "Show Info"
 }
 
-func (p *Inspect) Run() (menu.PageInterface, int, error) {
+func (p *InspectImage) Run() (interfaces.PageInterface, int, error) {
 	_, err := p.CreateAndRunTask(images.CreateInspectImageCommand(p.Image))
-	if err != nil {
+	if nil != err {
 		return p.HandleError(err, true)
 	}
 

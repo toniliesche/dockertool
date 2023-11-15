@@ -1,21 +1,26 @@
 package compose
 
 import (
-	"github.com/toniliesche/dockertool/modules/application/menu"
+	"github.com/toniliesche/dockertool/modules/application/menu/interfaces"
+	"github.com/toniliesche/dockertool/modules/application/menu/models"
+	"github.com/toniliesche/dockertool/modules/application/menu/pages/base"
 )
 
-type Index struct {
-	menu.Base
-	menu.Menu
+type SelectComposition struct {
+	base.MenuPage
 }
 
-func (p *Index) GetHeadline() string {
+func (p *SelectComposition) GetHeadline() string {
 	return "Compose Management"
 }
 
-func (p *Index) Run() (menu.PageInterface, int, error) {
-	menuEntries := menu.EntryList{}
+func (p *SelectComposition) Run() (interfaces.PageInterface, int, error) {
+	return p.CreateAndRunMenuTask(p.createEntries())
+}
 
-	result := p.RunMenu(menuEntries, menu.EntryList{})
-	return p.EvaluateResult(result)
+func (p *SelectComposition) createEntries() (models.EntryList, models.EntryList, error) {
+	menuEntries := models.EntryList{}
+	specialEntries := models.EntryList{}
+
+	return menuEntries, specialEntries, nil
 }

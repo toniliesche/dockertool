@@ -2,7 +2,7 @@ package images
 
 import (
 	"fmt"
-	"github.com/toniliesche/dockertool/modules/domain/shared"
+	"github.com/toniliesche/dockertool/modules/domain/tasks/base"
 	"github.com/toniliesche/dockertool/modules/infrastructure/console"
 	"github.com/toniliesche/dockertool/modules/infrastructure/docker/images"
 	"sort"
@@ -10,7 +10,7 @@ import (
 )
 
 type InspectImageTask struct {
-	shared.BaseTask
+	base.Task
 	image string
 }
 
@@ -26,7 +26,7 @@ func (t *InspectImageTask) Validate() bool {
 
 func (t *InspectImageTask) Run() error {
 	data, err := images.InspectImage(t.image)
-	if err != nil {
+	if nil != err {
 		return err
 	}
 
@@ -75,10 +75,6 @@ func (t *InspectImageTask) Run() error {
 		}
 	}
 
-	return nil
-}
-
-func (t *InspectImageTask) GetResult() interface{} {
 	return nil
 }
 

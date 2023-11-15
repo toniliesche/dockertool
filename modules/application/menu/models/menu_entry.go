@@ -1,13 +1,14 @@
-package menu
+package models
 
 import (
+	"github.com/toniliesche/dockertool/modules/application/menu/interfaces"
 	"sort"
 	"strings"
 )
 
 type Entry struct {
 	Label    string
-	Page     PageInterface
+	Page     interfaces.PageInterface
 	Args     []string
 	IntArgs  []int
 	Shortcut string

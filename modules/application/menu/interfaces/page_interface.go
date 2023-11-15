@@ -1,4 +1,4 @@
-package menu
+package interfaces
 
 type PageInterface interface {
 	RegisterHook()

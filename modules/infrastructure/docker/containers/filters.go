@@ -67,7 +67,7 @@ func (s stateFilter) runFilter(containers []*Container) []*Container {
 
 func runFilters(options *FilterOptions, containers []*Container) ([]*Container, error) {
 	filters, err := getFilterFunctions(options)
-	if err != nil {
+	if nil != err {
 		return nil, err
 	}
 

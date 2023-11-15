@@ -1,17 +1,19 @@
 package commands
 
-import "github.com/toniliesche/dockertool/modules/domain/shared"
+import (
+	"github.com/toniliesche/dockertool/modules/domain/tasks/interfaces"
+)
 
 type TaskRunner struct {
 }
 
-func (r *TaskRunner) CreateAndRunTask(command shared.TaskInterface, err error) (interface{}, error) {
-	if err != nil {
+func (r *TaskRunner) CreateAndRunTask(command interfaces.TaskInterface, err error) (interface{}, error) {
+	if nil != err {
 		return nil, err
 	}
 
 	err = command.Run()
-	if err != nil {
+	if nil != err {
 		return nil, err
 	}
 
