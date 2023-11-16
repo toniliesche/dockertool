@@ -12,7 +12,7 @@ type SelectVolume struct {
 }
 
 func (p *SelectVolume) GetHeadline() string {
-	return "Volume Management"
+	return "Volumes"
 }
 
 func (p *SelectVolume) Run() (interfaces.PageInterface, int, error) {

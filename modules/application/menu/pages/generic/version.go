@@ -12,7 +12,7 @@ type Version struct {
 }
 
 func (p *Version) GetHeadline() string {
-	return "Show MenuPage Version"
+	return "Show Menu Version Information"
 }
 
 func (p *Version) Run() (interfaces.PageInterface, int, error) {

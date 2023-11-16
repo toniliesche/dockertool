@@ -1,33 +1,41 @@
-package containers
+package compositions
 
 import (
 	"fmt"
 	"github.com/toniliesche/dockertool/modules/application/menu/interfaces"
 	"github.com/toniliesche/dockertool/modules/application/menu/models"
 	"github.com/toniliesche/dockertool/modules/application/menu/pages/base"
+	"github.com/toniliesche/dockertool/modules/application/menu/pages/containers"
 	"github.com/toniliesche/dockertool/modules/infrastructure/console"
-	"github.com/toniliesche/dockertool/modules/infrastructure/docker/containers"
+	"github.com/toniliesche/dockertool/modules/infrastructure/docker/compose"
+	containers2 "github.com/toniliesche/dockertool/modules/infrastructure/docker/containers"
 	"sort"
 )
 
-type SelectContainer struct {
+type SelectContainerAction struct {
 	base.MenuPage
+	Composition string
 }
 
-func (p *SelectContainer) GetHeadline() string {
+func (p *SelectContainerAction) GetHeadline() string {
 	return "Containers"
 }
 
-func (p *SelectContainer) Run() (interfaces.PageInterface, int, error) {
+func (p *SelectContainerAction) Run() (interfaces.PageInterface, int, error) {
 	return p.CreateAndRunMenuTask(p.createEntries())
 }
 
-func (p *SelectContainer) createEntries() (models.EntryList, models.EntryList, error) {
+func (p *SelectContainerAction) createEntries() (models.EntryList, models.EntryList, error) {
 	menuEntries := models.EntryList{}
 	specialEntries := models.EntryList{}
 
-	containerList, err := containers.FetchContainerList()
-	if nil != err {
+	composition, err := compose.FetchComposition(p.Composition)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	containerList, err := containers2.FetchContainerListByComposition(composition.Name, composition.ConfigFiles)
+	if err != nil {
 		return nil, nil, err
 	}
 
@@ -53,7 +61,7 @@ func (p *SelectContainer) createEntries() (models.EntryList, models.EntryList, e
 		container := containerList[mapping[key]]
 		menuEntries = append(
 			menuEntries,
-			&models.Entry{Label: fmt.Sprintf("%s (Running: %s)", container.Name, console.BoolToYesNoColored(container.IsRunning())), Page: &SelectContainerAction{Container: container.Name}, Divider: index == dividingIndex},
+			&models.Entry{Label: fmt.Sprintf("%s (Running: %s)", container.Name, console.BoolToYesNoColored(container.IsRunning())), Page: &containers.SelectContainerAction{Container: container.Name}, Divider: index == dividingIndex},
 		)
 	}
 

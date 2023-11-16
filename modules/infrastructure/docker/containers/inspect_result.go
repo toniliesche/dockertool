@@ -27,7 +27,7 @@ type InspectResult struct {
 			} `json:"Log"`
 		} `json:"Health"`
 	} `json:"State"`
-	Image        string `json:"ID"`
+	Image        string `json:"Image"`
 	Name         string `json:"Name"`
 	RestartCount int    `json:"RestartCount"`
 	Platform     string `json:"Platform"`

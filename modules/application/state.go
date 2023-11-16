@@ -22,6 +22,7 @@ type State struct {
 	BuildVersion    string
 	ShutdownChannel chan os.Signal
 	ReleaseChannel  string
+	Compose         bool
 }
 
 func (s *State) ResetHandler() {

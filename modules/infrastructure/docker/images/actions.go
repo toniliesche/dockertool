@@ -2,6 +2,7 @@ package images
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/toniliesche/dockertool/modules/infrastructure/docker"
 	"strings"
 )
@@ -18,7 +19,7 @@ func FetchImage(id string) (*Image, error) {
 		}
 	}
 
-	return nil, nil
+	return nil, fmt.Errorf("could not find image %s", id)
 }
 
 func FetchImageList() ([]*Image, error) {

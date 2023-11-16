@@ -4,7 +4,7 @@ type ListResult struct {
 	Command      string `json:"Command"`
 	CreatedAt    string `json:"CreatedAt"`
 	ID           string `json:"ID"`
-	Image        string `json:"ID"`
+	Image        string `json:"Image"`
 	Labels       string `json:"Labels"`
 	LocalVolumes string `json:"LocalVolumes"`
 	Mounts       string `json:"Mounts"`

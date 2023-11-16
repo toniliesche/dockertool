@@ -12,7 +12,7 @@ type SelectNetwork struct {
 }
 
 func (p *SelectNetwork) GetHeadline() string {
-	return "Network Management"
+	return "Networks"
 }
 
 func (p *SelectNetwork) Run() (interfaces.PageInterface, int, error) {

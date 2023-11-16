@@ -5,6 +5,7 @@ import (
 	"github.com/toniliesche/dockertool/modules/application"
 	application_cli "github.com/toniliesche/dockertool/modules/application/cli/commands/factory"
 	"github.com/toniliesche/dockertool/modules/infrastructure/console"
+	"github.com/toniliesche/dockertool/modules/infrastructure/docker/system"
 	"github.com/urfave/cli/v2"
 	"os"
 	"os/signal"
@@ -27,6 +28,9 @@ func main() {
 		os.Exit(1)
 	}()
 
+	err := system.CheckComposePlugin()
+	application.AppState.Compose = nil == err
+
 	app := &cli.App{
 		EnableBashCompletion: true,
 		Name:                 "dockertool",
@@ -42,7 +46,7 @@ func main() {
 		Commands:  commandFactory.GetCommands(),
 	}
 
-	err := app.Run(os.Args)
+	err = app.Run(os.Args)
 	if err != nil {
 		console.PrintError(err.Error())
 		os.Exit(1)

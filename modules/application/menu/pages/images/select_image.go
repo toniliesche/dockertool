@@ -13,7 +13,7 @@ type SelectImage struct {
 }
 
 func (p *SelectImage) GetHeadline() string {
-	return "Image Management"
+	return "Images"
 }
 
 func (p *SelectImage) Run() (interfaces.PageInterface, int, error) {

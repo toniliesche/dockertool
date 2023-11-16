@@ -2,6 +2,7 @@ package volumes
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/toniliesche/dockertool/modules/infrastructure/docker"
 	"strings"
 )
@@ -18,7 +19,7 @@ func FetchVolume(name string) (*Volume, error) {
 		}
 	}
 
-	return nil, nil
+	return nil, fmt.Errorf("could not find volume %s", name)
 }
 
 func FetchVolumeList() ([]*Volume, error) {

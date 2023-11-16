@@ -2,6 +2,7 @@ package networks
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/toniliesche/dockertool/modules/infrastructure/docker"
 	"strings"
 )
@@ -18,7 +19,7 @@ func FetchNetwork(name string) (*Network, error) {
 		}
 	}
 
-	return nil, nil
+	return nil, fmt.Errorf("could not find network %s", name)
 }
 
 func FetchNetworkList() ([]*Network, error) {

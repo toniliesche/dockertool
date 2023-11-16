@@ -53,8 +53,8 @@ func run(cmd *exec.Cmd, outputWriter io.Writer, errorWriter io.Writer, interacti
 
 	err := cmd.Run()
 	if !suppressOutput {
-		fmt.Println()
 		if nil != err {
+			fmt.Println()
 			fmt.Printf("An error occured: %s\n", err.Error())
 		}
 	}

@@ -7,6 +7,28 @@ import (
 	"strings"
 )
 
+func DeleteContainer(name string) error {
+	container, err := FetchContainer(name)
+	if nil != err {
+		return err
+	}
+
+	if nil == container {
+		return fmt.Errorf("container not found")
+	}
+
+	if container.IsRunning() {
+		return fmt.Errorf("container is still running")
+	}
+
+	args := []string{
+		"rm",
+		container.Name,
+	}
+
+	return docker.RunDockerCommand(args, false, false)
+}
+
 func FetchContainer(name string) (*Container, error) {
 	containers, err := FetchContainerList()
 	if nil != err {
@@ -19,7 +41,7 @@ func FetchContainer(name string) (*Container, error) {
 		}
 	}
 
-	return nil, nil
+	return nil, fmt.Errorf("could not find container %s", name)
 }
 
 func FetchContainerList(options ...*FilterOptions) ([]*Container, error) {
@@ -43,6 +65,28 @@ func FetchContainerListByVolume(volume string) ([]*Container, error) {
 		"--format",
 		"json",
 	}
+
+	return retrieveContainers(args)
+}
+
+func FetchContainerListByComposition(composition string, files []string) ([]*Container, error) {
+	args := []string{
+		"compose",
+		"-p",
+		composition,
+	}
+
+	for _, file := range files {
+		args = append(args, "-f", file)
+	}
+
+	args = append(
+		args,
+		"ps",
+		"-a",
+		"--format",
+		"json",
+	)
 
 	return retrieveContainers(args)
 }
@@ -123,8 +167,73 @@ func InspectContainer(name string) (*InspectResult, error) {
 	return inspect[0], nil
 }
 
-func retrieveContainers(args []string, options ...*FilterOptions) ([]*Container, error) {
+func RestartContainer(name string) error {
+	container, err := FetchContainer(name)
+	if nil != err {
+		return err
+	}
 
+	if nil == container {
+		return fmt.Errorf("container not found")
+	}
+
+	if !container.IsRunning() {
+		return fmt.Errorf("container is not running")
+	}
+
+	args := []string{
+		"restart",
+		container.Name,
+	}
+
+	return docker.RunDockerCommand(args, false, false)
+}
+
+func StartContainer(name string) error {
+	container, err := FetchContainer(name)
+	if nil != err {
+		return err
+	}
+
+	if nil == container {
+		return fmt.Errorf("container not found")
+	}
+
+	if container.IsRunning() {
+		return fmt.Errorf("container is already running")
+	}
+
+	args := []string{
+		"start",
+		container.Name,
+	}
+
+	return docker.RunDockerCommand(args, false, false)
+}
+
+func StopContainer(name string) error {
+	container, err := FetchContainer(name)
+	if nil != err {
+		return err
+	}
+
+	if nil == container {
+		return fmt.Errorf("container not found")
+	}
+
+	if !container.IsRunning() {
+		return fmt.Errorf("container is not running")
+	}
+
+	args := []string{
+		"stop",
+		container.Name,
+	}
+
+	return docker.RunDockerCommand(args, false, false)
+}
+
+func retrieveContainers(args []string, options ...*FilterOptions) ([]*Container, error) {
 	output, err := docker.CaptureDockerCommand(args)
 	if nil != err {
 		return nil, err
